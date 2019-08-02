@@ -37,13 +37,20 @@ module.exports = {
       errors: true
     },
     proxy: {
+      '/basic': {
+        target: 'http://localhost', // 请求本地后台项目
+        changeOrigin: true,
+        pathRewrite: {
+          '^/basic': '/basic'
+        }
+      },
       // change xxx-api/login => mock/login
       // detail: https://cli.vuejs.org/config/#devserver-proxy
-      [process.env.VUE_APP_BASE_API]: {
+      '/dev-api': {
         target: `http://127.0.0.1:${port}/mock`,
         changeOrigin: true,
         pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
+          '^/dev-api': ''
         }
       }
     },
