@@ -22,6 +22,11 @@ export function addRole(data) {
   })
 }
 
+/**
+ * 更新
+ * @param id
+ * @param data
+ */
 export function updateRole(id, data) {
   return request({
     url: `/dev-api/role/${id}`,

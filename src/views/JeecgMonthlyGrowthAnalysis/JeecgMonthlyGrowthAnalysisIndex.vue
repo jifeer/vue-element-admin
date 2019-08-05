@@ -2,29 +2,29 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.dictName"
-        placeholder="字典名称"
+        v-model="listQuery.year"
+        placeholder=""
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.dictCode"
-        placeholder="字典编码"
+        v-model="listQuery.month"
+        placeholder="月份"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.description"
-        placeholder="描述"
+        v-model="listQuery.mainIncome"
+        placeholder="佣金/主营收入"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.delFlag"
-        placeholder="删除状态"
+        v-model="listQuery.otherIncome"
+        placeholder="其他收入"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
@@ -79,104 +79,47 @@
       :row-class-name="tableRowClassName"
     >
       <el-table-column
-        label="dictName"
-        prop="dictName"
+        label="year"
+        prop="year"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.dictName }}</span>
+          <span>{{ scope.row.year }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="dictCode"
-        prop="dictCode"
+        label="month"
+        prop="month"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.dictCode }}</span>
+          <span>{{ scope.row.month }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="description"
-        prop="description"
+        label="mainIncome"
+        prop="mainIncome"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <span>{{ scope.row.mainIncome }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="delFlag"
-        prop="delFlag"
+        label="otherIncome"
+        prop="otherIncome"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.delFlag }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="createBy"
-        prop="createBy"
-        sortable
-        align="center"
-        width="80"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.createBy }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        fixed
-        label="createTime"
-        width="150px"
-        align="center"
-        prop="createTime"
-        sortable
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="updateBy"
-        prop="updateBy"
-        sortable
-        align="center"
-        width="80"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.updateBy }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        fixed
-        label="updateTime"
-        width="150px"
-        align="left"
-        prop="updateTime"
-        sortable
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="type"
-        prop="type"
-        sortable
-        align="center"
-        width="80"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.type }}</span>
+          <span>{{ scope.row.otherIncome }}</span>
         </template>
       </el-table-column>
 
@@ -236,82 +179,38 @@
         style="width: 400px; margin-left:50px;"
       >
         <el-form-item
-          label="字典名称"
+          label=""
           :rules="[
-            { required: true, message: '字典名称', trigger: 'blur' },
-            { min: 0, max: 100, message: '长度不能超过{100}位'}]"
+            { required: true, message: '', trigger: 'blur' },
+            { min: 0, max: 50, message: '长度不能超过{50}位'}]"
         >
-          <el-input v-model="temp.dictName" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.year" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
-          label="字典编码"
+          label="月份"
           :rules="[
-            { required: true, message: '字典编码', trigger: 'blur' },
-            { min: 0, max: 100, message: '长度不能超过{100}位'}]"
+            { required: true, message: '月份', trigger: 'blur' },
+            { min: 0, max: 50, message: '长度不能超过{50}位'}]"
         >
-          <el-input v-model="temp.dictCode" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.month" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
-          label="描述"
+          label="佣金/主营收入"
           :rules="[
-            { required: true, message: '描述', trigger: 'blur' },
-            { min: 0, max: 255, message: '长度不能超过{255}位'}]"
+            { required: true, message: '佣金/主营收入不能为空'},
+            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
+            { type: 'number', message: '必须为数字值'} ]"
         >
-          <el-input v-model="temp.description" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.mainIncome" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
-          label="删除状态"
+          label="其他收入"
           :rules="[
-            { required: true, message: '删除状态不能为空'},
-            { min: 0, max: 1, message: '长度不能超过{1}位'},
-            { type: 'integer', message: '必须是类型number和整数'} ]"
+            { required: true, message: '其他收入不能为空'},
+            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
+            { type: 'number', message: '必须为数字值'} ]"
         >
-          <el-input v-model="temp.delFlag" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        <el-form-item
-          label="创建人"
-          :rules="[
-            { required: true, message: '创建人', trigger: 'blur' },
-            { min: 0, max: 32, message: '长度不能超过{32}位'}]"
-        >
-          <el-input v-model="temp.createBy" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        <el-form-item label="创建时间">
-          <el-col :span="11">
-            <el-date-picker
-              v-model="temp.createTime"
-              type="date"
-              placeholder="选择日期"
-              style="width: 100%;"
-            />
-          </el-col>
-        </el-form-item>
-        <el-form-item
-          label="更新人"
-          :rules="[
-            { required: true, message: '更新人', trigger: 'blur' },
-            { min: 0, max: 32, message: '长度不能超过{32}位'}]"
-        >
-          <el-input v-model="temp.updateBy" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        <el-form-item label="更新时间">
-          <el-col :span="11">
-            <el-date-picker
-              v-model="temp.updateTime"
-              type="date"
-              placeholder="选择日期"
-              style="width: 100%;"
-            />
-          </el-col>
-        </el-form-item>
-        <el-form-item
-          label="字典类型0为string,1为number"
-          :rules="[
-            { required: true, message: '字典类型0为string,1为number不能为空'},
-            { min: 0, max: 1, message: '长度不能超过{1}位'},
-            { type: 'integer', message: '必须是类型number和整数'} ]"
-        >
-          <el-input v-model="temp.type" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.otherIncome" type="textarea" placeholder="Please input" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -345,7 +244,7 @@
   }
 </style>
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import { fetchList, createJeecgMonthlyGrowthAnalysis, updateJeecgMonthlyGrowthAnalysis } from '@/api/JeecgMonthlyGrowthAnalysis'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -364,7 +263,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, { })
 
 export default {
-  name: 'ComplexTable',
+  name: 'JeecgMonthlyGrowthAnalysis',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -485,7 +384,7 @@ export default {
         if (valid) {
           this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
+          createJeecgMonthlyGrowthAnalysis(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -512,7 +411,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({ }, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          updateJeecgMonthlyGrowthAnalysis(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
@@ -541,12 +440,6 @@ export default {
       const index = this.list.indexOf(row)
       this.list.splice(index, 1)
     },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    },
     handleDownload() {
       this.downloadLoading = true
         import('@/vendor/Export2Excel').then(excel => {
@@ -572,5 +465,4 @@ export default {
     }
   }
 }
-
 </script>

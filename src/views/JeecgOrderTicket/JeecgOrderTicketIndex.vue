@@ -2,29 +2,28 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.dictName"
-        placeholder="字典名称"
+        v-model="listQuery.ticketCode"
+        placeholder="航班号"
+        style="width: 200px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-date-picker
+        v-model="listQuery.tickectDate"
+        type="date"
+        placeholder="选择日期"
+        style="width: 100%;"
+      />
+      <el-input
+        v-model="listQuery.orderId"
+        placeholder="外键"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.dictCode"
-        placeholder="字典编码"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <el-input
-        v-model="listQuery.description"
-        placeholder="描述"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <el-input
-        v-model="listQuery.delFlag"
-        placeholder="删除状态"
+        v-model="listQuery.createBy"
+        placeholder="创建人"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
@@ -79,47 +78,37 @@
       :row-class-name="tableRowClassName"
     >
       <el-table-column
-        label="dictName"
-        prop="dictName"
+        label="ticketCode"
+        prop="ticketCode"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.dictName }}</span>
+          <span>{{ scope.row.ticketCode }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="dictCode"
-        prop="dictCode"
-        sortable
+        fixed
+        label="tickectDate"
+        width="150px"
         align="center"
-        width="80"
+        prop="tickectDate"
+        sortable
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.dictCode }}</span>
+          <span>{{ scope.row.tickectDate | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="description"
-        prop="description"
+        label="orderId"
+        prop="orderId"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="delFlag"
-        prop="delFlag"
-        sortable
-        align="center"
-        width="80"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.delFlag }}</span>
+          <span>{{ scope.row.orderId }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -160,23 +149,12 @@
         fixed
         label="updateTime"
         width="150px"
-        align="left"
+        align="center"
         prop="updateTime"
         sortable
       >
         <template slot-scope="scope">
           <span>{{ scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="type"
-        prop="type"
-        sortable
-        align="center"
-        width="80"
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.type }}</span>
         </template>
       </el-table-column>
 
@@ -236,37 +214,30 @@
         style="width: 400px; margin-left:50px;"
       >
         <el-form-item
-          label="字典名称"
+          label="航班号"
           :rules="[
-            { required: true, message: '字典名称', trigger: 'blur' },
+            { required: true, message: '航班号', trigger: 'blur' },
             { min: 0, max: 100, message: '长度不能超过{100}位'}]"
         >
-          <el-input v-model="temp.dictName" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.ticketCode" type="textarea" placeholder="Please input" />
+        </el-form-item>
+        <el-form-item label="航班时间">
+          <el-col :span="11">
+            <el-date-picker
+              v-model="temp.tickectDate"
+              type="date"
+              placeholder="选择日期"
+              style="width: 100%;"
+            />
+          </el-col>
         </el-form-item>
         <el-form-item
-          label="字典编码"
+          label="外键"
           :rules="[
-            { required: true, message: '字典编码', trigger: 'blur' },
-            { min: 0, max: 100, message: '长度不能超过{100}位'}]"
+            { required: true, message: '外键', trigger: 'blur' },
+            { min: 0, max: 32, message: '长度不能超过{32}位'}]"
         >
-          <el-input v-model="temp.dictCode" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        <el-form-item
-          label="描述"
-          :rules="[
-            { required: true, message: '描述', trigger: 'blur' },
-            { min: 0, max: 255, message: '长度不能超过{255}位'}]"
-        >
-          <el-input v-model="temp.description" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        <el-form-item
-          label="删除状态"
-          :rules="[
-            { required: true, message: '删除状态不能为空'},
-            { min: 0, max: 1, message: '长度不能超过{1}位'},
-            { type: 'integer', message: '必须是类型number和整数'} ]"
-        >
-          <el-input v-model="temp.delFlag" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.orderId" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
           label="创建人"
@@ -287,14 +258,14 @@
           </el-col>
         </el-form-item>
         <el-form-item
-          label="更新人"
+          label="修改人"
           :rules="[
-            { required: true, message: '更新人', trigger: 'blur' },
+            { required: true, message: '修改人', trigger: 'blur' },
             { min: 0, max: 32, message: '长度不能超过{32}位'}]"
         >
           <el-input v-model="temp.updateBy" type="textarea" placeholder="Please input" />
         </el-form-item>
-        <el-form-item label="更新时间">
+        <el-form-item label="修改时间">
           <el-col :span="11">
             <el-date-picker
               v-model="temp.updateTime"
@@ -303,15 +274,6 @@
               style="width: 100%;"
             />
           </el-col>
-        </el-form-item>
-        <el-form-item
-          label="字典类型0为string,1为number"
-          :rules="[
-            { required: true, message: '字典类型0为string,1为number不能为空'},
-            { min: 0, max: 1, message: '长度不能超过{1}位'},
-            { type: 'integer', message: '必须是类型number和整数'} ]"
-        >
-          <el-input v-model="temp.type" type="textarea" placeholder="Please input" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -345,7 +307,7 @@
   }
 </style>
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import { fetchList, createJeecgOrderTicket, updateJeecgOrderTicket } from '@/api/JeecgOrderTicket'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -364,7 +326,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, { })
 
 export default {
-  name: 'ComplexTable',
+  name: 'JeecgOrderTicket',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -485,7 +447,7 @@ export default {
         if (valid) {
           this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
+          createJeecgOrderTicket(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -512,7 +474,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({ }, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          updateJeecgOrderTicket(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
@@ -541,12 +503,6 @@ export default {
       const index = this.list.indexOf(row)
       this.list.splice(index, 1)
     },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    },
     handleDownload() {
       this.downloadLoading = true
         import('@/vendor/Export2Excel').then(excel => {
@@ -572,5 +528,4 @@ export default {
     }
   }
 }
-
 </script>

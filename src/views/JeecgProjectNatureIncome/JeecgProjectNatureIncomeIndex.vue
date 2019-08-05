@@ -2,29 +2,29 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.dictName"
-        placeholder="字典名称"
+        v-model="listQuery.nature"
+        placeholder="项目性质"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.dictCode"
-        placeholder="字典编码"
+        v-model="listQuery.insuranceFee"
+        placeholder="保险经纪佣金费"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.description"
-        placeholder="描述"
+        v-model="listQuery.riskConsultingFee"
+        placeholder="风险咨询费"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.delFlag"
-        placeholder="删除状态"
+        v-model="listQuery.evaluationFee"
+        placeholder="承保公估评估费"
         style="width: 200px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
@@ -79,104 +79,80 @@
       :row-class-name="tableRowClassName"
     >
       <el-table-column
-        label="dictName"
-        prop="dictName"
+        label="nature"
+        prop="nature"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.dictName }}</span>
+          <span>{{ scope.row.nature }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="dictCode"
-        prop="dictCode"
+        label="insuranceFee"
+        prop="insuranceFee"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.dictCode }}</span>
+          <span>{{ scope.row.insuranceFee }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="description"
-        prop="description"
+        label="riskConsultingFee"
+        prop="riskConsultingFee"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <span>{{ scope.row.riskConsultingFee }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="delFlag"
-        prop="delFlag"
+        label="evaluationFee"
+        prop="evaluationFee"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.delFlag }}</span>
+          <span>{{ scope.row.evaluationFee }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="createBy"
-        prop="createBy"
+        label="insuranceEvaluationFee"
+        prop="insuranceEvaluationFee"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.createBy }}</span>
+          <span>{{ scope.row.insuranceEvaluationFee }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        fixed
-        label="createTime"
-        width="150px"
-        align="center"
-        prop="createTime"
-        sortable
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="updateBy"
-        prop="updateBy"
+        label="biddingConsultingFee"
+        prop="biddingConsultingFee"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.updateBy }}</span>
+          <span>{{ scope.row.biddingConsultingFee }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        fixed
-        label="updateTime"
-        width="150px"
-        align="left"
-        prop="updateTime"
-        sortable
-      >
-        <template slot-scope="scope">
-          <span>{{ scope.row.updateTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="type"
-        prop="type"
+        label="interolConsultingFee"
+        prop="interolConsultingFee"
         sortable
         align="center"
         width="80"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.type }}</span>
+          <span>{{ scope.row.interolConsultingFee }}</span>
         </template>
       </el-table-column>
 
@@ -236,82 +212,66 @@
         style="width: 400px; margin-left:50px;"
       >
         <el-form-item
-          label="字典名称"
+          label="项目性质"
           :rules="[
-            { required: true, message: '字典名称', trigger: 'blur' },
-            { min: 0, max: 100, message: '长度不能超过{100}位'}]"
+            { required: true, message: '项目性质', trigger: 'blur' },
+            { min: 0, max: 50, message: '长度不能超过{50}位'}]"
         >
-          <el-input v-model="temp.dictName" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.nature" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
-          label="字典编码"
+          label="保险经纪佣金费"
           :rules="[
-            { required: true, message: '字典编码', trigger: 'blur' },
-            { min: 0, max: 100, message: '长度不能超过{100}位'}]"
+            { required: true, message: '保险经纪佣金费不能为空'},
+            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
+            { type: 'number', message: '必须为数字值'} ]"
         >
-          <el-input v-model="temp.dictCode" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.insuranceFee" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
-          label="描述"
+          label="风险咨询费"
           :rules="[
-            { required: true, message: '描述', trigger: 'blur' },
-            { min: 0, max: 255, message: '长度不能超过{255}位'}]"
+            { required: true, message: '风险咨询费不能为空'},
+            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
+            { type: 'number', message: '必须为数字值'} ]"
         >
-          <el-input v-model="temp.description" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.riskConsultingFee" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
-          label="删除状态"
+          label="承保公估评估费"
           :rules="[
-            { required: true, message: '删除状态不能为空'},
-            { min: 0, max: 1, message: '长度不能超过{1}位'},
-            { type: 'integer', message: '必须是类型number和整数'} ]"
+            { required: true, message: '承保公估评估费不能为空'},
+            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
+            { type: 'number', message: '必须为数字值'} ]"
         >
-          <el-input v-model="temp.delFlag" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.evaluationFee" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
-          label="创建人"
+          label="保险公估费"
           :rules="[
-            { required: true, message: '创建人', trigger: 'blur' },
-            { min: 0, max: 32, message: '长度不能超过{32}位'}]"
+            { required: true, message: '保险公估费不能为空'},
+            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
+            { type: 'number', message: '必须为数字值'} ]"
         >
-          <el-input v-model="temp.createBy" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        <el-form-item label="创建时间">
-          <el-col :span="11">
-            <el-date-picker
-              v-model="temp.createTime"
-              type="date"
-              placeholder="选择日期"
-              style="width: 100%;"
-            />
-          </el-col>
+          <el-input v-model="temp.insuranceEvaluationFee" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
-          label="更新人"
+          label="投标咨询费"
           :rules="[
-            { required: true, message: '更新人', trigger: 'blur' },
-            { min: 0, max: 32, message: '长度不能超过{32}位'}]"
+            { required: true, message: '投标咨询费不能为空'},
+            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
+            { type: 'number', message: '必须为数字值'} ]"
         >
-          <el-input v-model="temp.updateBy" type="textarea" placeholder="Please input" />
-        </el-form-item>
-        <el-form-item label="更新时间">
-          <el-col :span="11">
-            <el-date-picker
-              v-model="temp.updateTime"
-              type="date"
-              placeholder="选择日期"
-              style="width: 100%;"
-            />
-          </el-col>
+          <el-input v-model="temp.biddingConsultingFee" type="textarea" placeholder="Please input" />
         </el-form-item>
         <el-form-item
-          label="字典类型0为string,1为number"
+          label="内控咨询费"
           :rules="[
-            { required: true, message: '字典类型0为string,1为number不能为空'},
-            { min: 0, max: 1, message: '长度不能超过{1}位'},
-            { type: 'integer', message: '必须是类型number和整数'} ]"
+            { required: true, message: '内控咨询费不能为空'},
+            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
+            { type: 'number', message: '必须为数字值'} ]"
         >
-          <el-input v-model="temp.type" type="textarea" placeholder="Please input" />
+          <el-input v-model="temp.interolConsultingFee" type="textarea" placeholder="Please input" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -345,7 +305,7 @@
   }
 </style>
 <script>
-import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import { fetchList, createJeecgProjectNatureIncome, updateJeecgProjectNatureIncome } from '@/api/JeecgProjectNatureIncome'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -364,7 +324,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 }, { })
 
 export default {
-  name: 'ComplexTable',
+  name: 'JeecgProjectNatureIncome',
   components: { Pagination },
   directives: { waves },
   filters: {
@@ -485,7 +445,7 @@ export default {
         if (valid) {
           this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
+          createJeecgProjectNatureIncome(this.temp).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -512,7 +472,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({ }, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          updateJeecgProjectNatureIncome(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
@@ -541,12 +501,6 @@ export default {
       const index = this.list.indexOf(row)
       this.list.splice(index, 1)
     },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    },
     handleDownload() {
       this.downloadLoading = true
         import('@/vendor/Export2Excel').then(excel => {
@@ -572,5 +526,4 @@ export default {
     }
   }
 }
-
 </script>
