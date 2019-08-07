@@ -43,7 +43,8 @@ export function createJeecgOrderCustomer(data) {
 export function updateJeecgOrderCustomer(data) {
   return request({
     url: '/basic/jeecg-order-customer/edit',
-    method: 'post',
+    method: 'put',
+    enctype: 'application/x-www-form-urlencoded',
     data
   })
 }

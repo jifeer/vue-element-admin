@@ -8,7 +8,7 @@ const jeecgProjectNatureIncomeRouter = {
   redirect: '/JeecgProjectNatureIncome/JeecgProjectNatureIncomeIndex',
   name: 'jeecgProjectNatureIncome',
   meta: {
-    title: '',
+    title: '项目自然收入',
     icon: 'table'
   },
   children: [
@@ -16,7 +16,7 @@ const jeecgProjectNatureIncomeRouter = {
       path: 'JeecgProjectNatureIncomeIndex',
       component: () => import('@/views/JeecgProjectNatureIncome/JeecgProjectNatureIncomeIndex'),
       name: 'jeecgProjectNatureIncome',
-      meta: { title: '' }
+      meta: { title: '项目自然收入' }
     }
   ]
 }

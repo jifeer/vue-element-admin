@@ -8,7 +8,7 @@ const jeecgOrderTicketRouter = {
   redirect: '/JeecgOrderTicket/JeecgOrderTicketIndex',
   name: 'jeecgOrderTicket',
   meta: {
-    title: '',
+    title: '航班信息表',
     icon: 'table'
   },
   children: [
@@ -16,7 +16,7 @@ const jeecgOrderTicketRouter = {
       path: 'JeecgOrderTicketIndex',
       component: () => import('@/views/JeecgOrderTicket/JeecgOrderTicketIndex'),
       name: 'jeecgOrderTicket',
-      meta: { title: '' }
+      meta: { title: '航班信息表' }
     }
   ]
 }

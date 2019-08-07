@@ -8,7 +8,7 @@ const jeecgOrderCustomerRouter = {
   redirect: '/JeecgOrderCustomer/JeecgOrderCustomerIndex',
   name: 'jeecgOrderCustomer',
   meta: {
-    title: '',
+    title: '订单客户信息表',
     icon: 'table'
   },
   children: [
@@ -16,7 +16,7 @@ const jeecgOrderCustomerRouter = {
       path: 'JeecgOrderCustomerIndex',
       component: () => import('@/views/JeecgOrderCustomer/JeecgOrderCustomerIndex'),
       name: 'jeecgOrderCustomer',
-      meta: { title: '' }
+      meta: { title: '订单客户信息表' }
     }
   ]
 }

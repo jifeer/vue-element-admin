@@ -43,7 +43,8 @@ export function createJeecgMonthlyGrowthAnalysis(data) {
 export function updateJeecgMonthlyGrowthAnalysis(data) {
   return request({
     url: '/basic/jeecg-monthly-growth-analysis/edit',
-    method: 'post',
+    method: 'put',
+    enctype: 'application/x-www-form-urlencoded',
     data
   })
 }

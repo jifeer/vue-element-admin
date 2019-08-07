@@ -15,19 +15,66 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <el-date-picker
-        v-model="listQuery.orderDate"
-        type="date"
-        placeholder="选择日期"
-        style="width: 100%;"
-      />
-      <el-input
-        v-model="listQuery.orderMoney"
-        placeholder="订单金额"
-        style="width: 200px;"
+      <div v-show="isShow" id="isShow">
+        <el-date-picker
+          v-model="listQuery.orderDate"
+          type="date"
+          placeholder="选择日期"
+          class="filter-item"
+          style="width: 100px;"
+        />
+        <el-input
+          v-model="listQuery.orderMoney"
+          placeholder="订单金额"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-input
+          v-model="listQuery.content"
+          placeholder="订单备注"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-input
+          v-model="listQuery.createBy"
+          placeholder="创建人"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-date-picker
+          v-model="listQuery.createTime"
+          type="date"
+          placeholder="选择日期"
+          class="filter-item"
+          style="width: 100px;"
+        />
+        <el-input
+          v-model="listQuery.updateBy"
+          placeholder="修改人"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-date-picker
+          v-model="listQuery.updateTime"
+          type="date"
+          placeholder="选择日期"
+          class="filter-item"
+          style="width: 100px;"
+        />
+      </div>
+      <el-button
+        v-waves
         class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
+        type="primary"
+        icon="el-icon-search"
+        @click="showToggle"
+      >
+        显示 | 隐藏条件
+      </el-button>
       <el-button
         v-waves
         class="filter-item"
@@ -35,7 +82,7 @@
         icon="el-icon-search"
         @click="handleFilter"
       >
-        Search
+        查询
       </el-button>
       <el-button
         class="filter-item"
@@ -44,7 +91,7 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >
-        Add
+        新增
       </el-button>
       <el-button
         v-waves
@@ -54,16 +101,9 @@
         icon="el-icon-download"
         @click="handleDownload"
       >
-        Export
+        导出
       </el-button>
-      <el-checkbox
-        v-model="showReviewer"
-        class="filter-item"
-        style="margin-left:15px;"
-        @change="tableKey=tableKey+1"
-      >
-        reviewer
-      </el-checkbox>
+
     </div>
 
     <el-table
@@ -74,7 +114,7 @@
       fit
       highlight-current-row
       max-height="40%"
-      style="width: 80%;"
+      style="width: 100%;"
       :row-class-name="tableRowClassName"
     >
       <el-table-column
@@ -82,7 +122,7 @@
         prop="orderCode"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.orderCode }}</span>
@@ -93,7 +133,7 @@
         prop="ctype"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.ctype }}</span>
@@ -102,7 +142,7 @@
       <el-table-column
         fixed
         label="orderDate"
-        width="150px"
+        width="auto"
         align="center"
         prop="orderDate"
         sortable
@@ -116,7 +156,7 @@
         prop="orderMoney"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.orderMoney }}</span>
@@ -127,7 +167,7 @@
         prop="content"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.content }}</span>
@@ -138,7 +178,7 @@
         prop="createBy"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.createBy }}</span>
@@ -147,7 +187,7 @@
       <el-table-column
         fixed
         label="createTime"
-        width="150px"
+        width="auto"
         align="center"
         prop="createTime"
         sortable
@@ -161,7 +201,7 @@
         prop="updateBy"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.updateBy }}</span>
@@ -170,7 +210,7 @@
       <el-table-column
         fixed
         label="updateTime"
-        width="150px"
+        width="auto"
         align="center"
         prop="updateTime"
         sortable
@@ -237,6 +277,7 @@
       >
         <el-form-item
           label="订单号"
+          prop="orderCode"
           :rules="[
             { required: true, message: '订单号', trigger: 'blur' },
             { min: 0, max: 50, message: '长度不能超过{50}位'}]"
@@ -245,13 +286,17 @@
         </el-form-item>
         <el-form-item
           label="订单类型"
+          prop="ctype"
           :rules="[
             { required: true, message: '订单类型', trigger: 'blur' },
             { min: 0, max: 500, message: '长度不能超过{500}位'}]"
         >
           <el-input v-model="temp.ctype" type="textarea" placeholder="Please input" />
         </el-form-item>
-        <el-form-item label="订单日期">
+        <el-form-item
+          prop="orderDate"
+          label="订单日期"
+        >
           <el-col :span="11">
             <el-date-picker
               v-model="temp.orderDate"
@@ -263,15 +308,16 @@
         </el-form-item>
         <el-form-item
           label="订单金额"
+          prop="orderMoney"
           :rules="[
             { required: true, message: '订单金额不能为空'},
-            { type: 'double', message: '必须为双精度浮点型'},
-            { min: 0, max: 14, message: '长度不能超过{14}位,小数点后精确到{3}位'} ]"
+            { type: 'float', message: '必须为浮点型,长度不能超过{14}位,小数点后精确到{3}位'} ]"
         >
-          <el-input v-model="temp.orderMoney" type="textarea" placeholder="Please input" />
+          <el-input-number v-model="temp.orderMoney" type="number" placeholder="Please input" />
         </el-form-item>
         <el-form-item
           label="订单备注"
+          prop="content"
           :rules="[
             { required: true, message: '订单备注', trigger: 'blur' },
             { min: 0, max: 500, message: '长度不能超过{500}位'}]"
@@ -280,13 +326,17 @@
         </el-form-item>
         <el-form-item
           label="创建人"
+          prop="createBy"
           :rules="[
             { required: true, message: '创建人', trigger: 'blur' },
             { min: 0, max: 32, message: '长度不能超过{32}位'}]"
         >
           <el-input v-model="temp.createBy" type="textarea" placeholder="Please input" />
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item
+          prop="createTime"
+          label="创建时间"
+        >
           <el-col :span="11">
             <el-date-picker
               v-model="temp.createTime"
@@ -298,13 +348,17 @@
         </el-form-item>
         <el-form-item
           label="修改人"
+          prop="updateBy"
           :rules="[
             { required: true, message: '修改人', trigger: 'blur' },
             { min: 0, max: 32, message: '长度不能超过{32}位'}]"
         >
           <el-input v-model="temp.updateBy" type="textarea" placeholder="Please input" />
         </el-form-item>
-        <el-form-item label="修改时间">
+        <el-form-item
+          prop="updateTime"
+          label="修改时间"
+        >
           <el-col :span="11">
             <el-date-picker
               v-model="temp.updateTime"
@@ -343,6 +397,18 @@
 
   .el-table .success-row {
     background: #f0f9eb;
+  }
+  .el-table__header tr,
+  .el-table__header th {
+      padding: 0;
+      height: 20px;
+      width: auto;
+  }
+  .el-table__body tr,
+  .el-table__body td {
+      padding: 0;
+      height: 20px;
+      width: auto;
   }
 </style>
 <script>
@@ -383,6 +449,7 @@ export default {
   },
   data() {
     return {
+      isShow: false,
       tableKey: 0,
       list: null,
       total: 0,
@@ -545,8 +612,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
         import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-          const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+          const tHeader = ['orderCode', 'ctype', 'orderDate', 'orderMoney', 'content', 'createBy', 'createTime', 'updateBy', 'updateTime']
+          const filterVal = ['orderCode', 'ctype', 'orderDate', 'orderMoney', 'content', 'createBy', 'createTime', 'updateBy', 'updateTime']
           const data = this.formatJson(filterVal, this.list)
           excel.export_json_to_excel({
             header: tHeader,
@@ -564,6 +631,14 @@ export default {
           return v[j]
         }
       }))
+    },
+    showToggle: function() {
+      console.log(this.isShow)
+      if (this.isShow) {
+        this.isShow = false
+      } else {
+        this.isShow = true
+      }
     }
   }
 }

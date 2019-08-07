@@ -43,7 +43,8 @@ export function createJeecgOrderMain(data) {
 export function updateJeecgOrderMain(data) {
   return request({
     url: '/basic/jeecg-order-main/edit',
-    method: 'post',
+    method: 'put',
+    enctype: 'application/x-www-form-urlencoded',
     data
   })
 }

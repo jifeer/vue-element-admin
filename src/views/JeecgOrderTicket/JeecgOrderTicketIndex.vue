@@ -12,22 +12,55 @@
         v-model="listQuery.tickectDate"
         type="date"
         placeholder="选择日期"
-        style="width: 100%;"
-      />
-      <el-input
-        v-model="listQuery.orderId"
-        placeholder="外键"
-        style="width: 200px;"
         class="filter-item"
-        @keyup.enter.native="handleFilter"
+        style="width: 100px;"
       />
-      <el-input
-        v-model="listQuery.createBy"
-        placeholder="创建人"
-        style="width: 200px;"
+      <div v-show="isShow" id="isShow">
+        <el-input
+          v-model="listQuery.orderId"
+          placeholder="外键"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-input
+          v-model="listQuery.createBy"
+          placeholder="创建人"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-date-picker
+          v-model="listQuery.createTime"
+          type="date"
+          placeholder="选择日期"
+          class="filter-item"
+          style="width: 100px;"
+        />
+        <el-input
+          v-model="listQuery.updateBy"
+          placeholder="修改人"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-date-picker
+          v-model="listQuery.updateTime"
+          type="date"
+          placeholder="选择日期"
+          class="filter-item"
+          style="width: 100px;"
+        />
+      </div>
+      <el-button
+        v-waves
         class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
+        type="primary"
+        icon="el-icon-search"
+        @click="showToggle"
+      >
+        显示 | 隐藏条件
+      </el-button>
       <el-button
         v-waves
         class="filter-item"
@@ -35,7 +68,7 @@
         icon="el-icon-search"
         @click="handleFilter"
       >
-        Search
+        查询
       </el-button>
       <el-button
         class="filter-item"
@@ -44,7 +77,7 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >
-        Add
+        新增
       </el-button>
       <el-button
         v-waves
@@ -54,16 +87,9 @@
         icon="el-icon-download"
         @click="handleDownload"
       >
-        Export
+        导出
       </el-button>
-      <el-checkbox
-        v-model="showReviewer"
-        class="filter-item"
-        style="margin-left:15px;"
-        @change="tableKey=tableKey+1"
-      >
-        reviewer
-      </el-checkbox>
+
     </div>
 
     <el-table
@@ -74,7 +100,7 @@
       fit
       highlight-current-row
       max-height="40%"
-      style="width: 80%;"
+      style="width: 100%;"
       :row-class-name="tableRowClassName"
     >
       <el-table-column
@@ -82,7 +108,7 @@
         prop="ticketCode"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.ticketCode }}</span>
@@ -91,7 +117,7 @@
       <el-table-column
         fixed
         label="tickectDate"
-        width="150px"
+        width="auto"
         align="center"
         prop="tickectDate"
         sortable
@@ -105,7 +131,7 @@
         prop="orderId"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.orderId }}</span>
@@ -116,7 +142,7 @@
         prop="createBy"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.createBy }}</span>
@@ -125,7 +151,7 @@
       <el-table-column
         fixed
         label="createTime"
-        width="150px"
+        width="auto"
         align="center"
         prop="createTime"
         sortable
@@ -139,7 +165,7 @@
         prop="updateBy"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.updateBy }}</span>
@@ -148,7 +174,7 @@
       <el-table-column
         fixed
         label="updateTime"
-        width="150px"
+        width="auto"
         align="center"
         prop="updateTime"
         sortable
@@ -215,13 +241,17 @@
       >
         <el-form-item
           label="航班号"
+          prop="ticketCode"
           :rules="[
             { required: true, message: '航班号', trigger: 'blur' },
             { min: 0, max: 100, message: '长度不能超过{100}位'}]"
         >
           <el-input v-model="temp.ticketCode" type="textarea" placeholder="Please input" />
         </el-form-item>
-        <el-form-item label="航班时间">
+        <el-form-item
+          prop="tickectDate"
+          label="航班时间"
+        >
           <el-col :span="11">
             <el-date-picker
               v-model="temp.tickectDate"
@@ -233,6 +263,7 @@
         </el-form-item>
         <el-form-item
           label="外键"
+          prop="orderId"
           :rules="[
             { required: true, message: '外键', trigger: 'blur' },
             { min: 0, max: 32, message: '长度不能超过{32}位'}]"
@@ -241,13 +272,17 @@
         </el-form-item>
         <el-form-item
           label="创建人"
+          prop="createBy"
           :rules="[
             { required: true, message: '创建人', trigger: 'blur' },
             { min: 0, max: 32, message: '长度不能超过{32}位'}]"
         >
           <el-input v-model="temp.createBy" type="textarea" placeholder="Please input" />
         </el-form-item>
-        <el-form-item label="创建时间">
+        <el-form-item
+          prop="createTime"
+          label="创建时间"
+        >
           <el-col :span="11">
             <el-date-picker
               v-model="temp.createTime"
@@ -259,13 +294,17 @@
         </el-form-item>
         <el-form-item
           label="修改人"
+          prop="updateBy"
           :rules="[
             { required: true, message: '修改人', trigger: 'blur' },
             { min: 0, max: 32, message: '长度不能超过{32}位'}]"
         >
           <el-input v-model="temp.updateBy" type="textarea" placeholder="Please input" />
         </el-form-item>
-        <el-form-item label="修改时间">
+        <el-form-item
+          prop="updateTime"
+          label="修改时间"
+        >
           <el-col :span="11">
             <el-date-picker
               v-model="temp.updateTime"
@@ -304,6 +343,18 @@
 
   .el-table .success-row {
     background: #f0f9eb;
+  }
+  .el-table__header tr,
+  .el-table__header th {
+      padding: 0;
+      height: 20px;
+      width: auto;
+  }
+  .el-table__body tr,
+  .el-table__body td {
+      padding: 0;
+      height: 20px;
+      width: auto;
   }
 </style>
 <script>
@@ -344,6 +395,7 @@ export default {
   },
   data() {
     return {
+      isShow: false,
       tableKey: 0,
       list: null,
       total: 0,
@@ -506,8 +558,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
         import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-          const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+          const tHeader = ['ticketCode', 'tickectDate', 'orderId', 'createBy', 'createTime', 'updateBy', 'updateTime']
+          const filterVal = ['ticketCode', 'tickectDate', 'orderId', 'createBy', 'createTime', 'updateBy', 'updateTime']
           const data = this.formatJson(filterVal, this.list)
           excel.export_json_to_excel({
             header: tHeader,
@@ -525,6 +577,14 @@ export default {
           return v[j]
         }
       }))
+    },
+    showToggle: function() {
+      console.log(this.isShow)
+      if (this.isShow) {
+        this.isShow = false
+      } else {
+        this.isShow = true
+      }
     }
   }
 }

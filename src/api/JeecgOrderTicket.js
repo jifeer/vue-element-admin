@@ -43,7 +43,8 @@ export function createJeecgOrderTicket(data) {
 export function updateJeecgOrderTicket(data) {
   return request({
     url: '/basic/jeecg-order-ticket/edit',
-    method: 'post',
+    method: 'put',
+    enctype: 'application/x-www-form-urlencoded',
     data
   })
 }

@@ -8,7 +8,7 @@ const jeecgMonthlyGrowthAnalysisRouter = {
   redirect: '/JeecgMonthlyGrowthAnalysis/JeecgMonthlyGrowthAnalysisIndex',
   name: 'jeecgMonthlyGrowthAnalysis',
   meta: {
-    title: '',
+    title: '月增长分析表',
     icon: 'table'
   },
   children: [
@@ -16,7 +16,7 @@ const jeecgMonthlyGrowthAnalysisRouter = {
       path: 'JeecgMonthlyGrowthAnalysisIndex',
       component: () => import('@/views/JeecgMonthlyGrowthAnalysis/JeecgMonthlyGrowthAnalysisIndex'),
       name: 'jeecgMonthlyGrowthAnalysis',
-      meta: { title: '' }
+      meta: { title: '月增长分析表' }
     }
   ]
 }

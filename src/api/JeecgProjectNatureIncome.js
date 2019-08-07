@@ -43,7 +43,8 @@ export function createJeecgProjectNatureIncome(data) {
 export function updateJeecgProjectNatureIncome(data) {
   return request({
     url: '/basic/jeecg-project-nature-income/edit',
-    method: 'post',
+    method: 'put',
+    enctype: 'application/x-www-form-urlencoded',
     data
   })
 }

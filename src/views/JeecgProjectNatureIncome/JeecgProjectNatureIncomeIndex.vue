@@ -15,20 +15,52 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
-      <el-input
-        v-model="listQuery.riskConsultingFee"
-        placeholder="风险咨询费"
-        style="width: 200px;"
+      <div v-show="isShow" id="isShow">
+        <el-input
+          v-model="listQuery.riskConsultingFee"
+          placeholder="风险咨询费"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-input
+          v-model="listQuery.evaluationFee"
+          placeholder="承保公估评估费"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-input
+          v-model="listQuery.insuranceEvaluationFee"
+          placeholder="保险公估费"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-input
+          v-model="listQuery.biddingConsultingFee"
+          placeholder="投标咨询费"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+        <el-input
+          v-model="listQuery.interolConsultingFee"
+          placeholder="内控咨询费"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="handleFilter"
+        />
+      </div>
+      <el-button
+        v-waves
         class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
-      <el-input
-        v-model="listQuery.evaluationFee"
-        placeholder="承保公估评估费"
-        style="width: 200px;"
-        class="filter-item"
-        @keyup.enter.native="handleFilter"
-      />
+        type="primary"
+        icon="el-icon-search"
+        @click="showToggle"
+      >
+        显示 | 隐藏条件
+      </el-button>
       <el-button
         v-waves
         class="filter-item"
@@ -36,7 +68,7 @@
         icon="el-icon-search"
         @click="handleFilter"
       >
-        Search
+        查询
       </el-button>
       <el-button
         class="filter-item"
@@ -45,7 +77,7 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >
-        Add
+        新增
       </el-button>
       <el-button
         v-waves
@@ -55,16 +87,9 @@
         icon="el-icon-download"
         @click="handleDownload"
       >
-        Export
+        导出
       </el-button>
-      <el-checkbox
-        v-model="showReviewer"
-        class="filter-item"
-        style="margin-left:15px;"
-        @change="tableKey=tableKey+1"
-      >
-        reviewer
-      </el-checkbox>
+
     </div>
 
     <el-table
@@ -75,7 +100,7 @@
       fit
       highlight-current-row
       max-height="40%"
-      style="width: 80%;"
+      style="width: 100%;"
       :row-class-name="tableRowClassName"
     >
       <el-table-column
@@ -83,7 +108,7 @@
         prop="nature"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.nature }}</span>
@@ -94,7 +119,7 @@
         prop="insuranceFee"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.insuranceFee }}</span>
@@ -105,7 +130,7 @@
         prop="riskConsultingFee"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.riskConsultingFee }}</span>
@@ -116,7 +141,7 @@
         prop="evaluationFee"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.evaluationFee }}</span>
@@ -127,7 +152,7 @@
         prop="insuranceEvaluationFee"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.insuranceEvaluationFee }}</span>
@@ -138,7 +163,7 @@
         prop="biddingConsultingFee"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.biddingConsultingFee }}</span>
@@ -149,7 +174,7 @@
         prop="interolConsultingFee"
         sortable
         align="center"
-        width="80"
+        width="auto"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.interolConsultingFee }}</span>
@@ -213,6 +238,7 @@
       >
         <el-form-item
           label="项目性质"
+          prop="nature"
           :rules="[
             { required: true, message: '项目性质', trigger: 'blur' },
             { min: 0, max: 50, message: '长度不能超过{50}位'}]"
@@ -221,57 +247,57 @@
         </el-form-item>
         <el-form-item
           label="保险经纪佣金费"
+          prop="insuranceFee"
           :rules="[
             { required: true, message: '保险经纪佣金费不能为空'},
-            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
-            { type: 'number', message: '必须为数字值'} ]"
+            { type: 'number', message: '必须为数字值,长度不能超过{21}位,小数点后精确到{2}位'} ]"
         >
-          <el-input v-model="temp.insuranceFee" type="textarea" placeholder="Please input" />
+          <el-input-number v-model="temp.insuranceFee" type="number" placeholder="Please input" />
         </el-form-item>
         <el-form-item
           label="风险咨询费"
+          prop="riskConsultingFee"
           :rules="[
             { required: true, message: '风险咨询费不能为空'},
-            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
-            { type: 'number', message: '必须为数字值'} ]"
+            { type: 'number', message: '必须为数字值,长度不能超过{21}位,小数点后精确到{2}位'} ]"
         >
-          <el-input v-model="temp.riskConsultingFee" type="textarea" placeholder="Please input" />
+          <el-input-number v-model="temp.riskConsultingFee" type="number" placeholder="Please input" />
         </el-form-item>
         <el-form-item
           label="承保公估评估费"
+          prop="evaluationFee"
           :rules="[
             { required: true, message: '承保公估评估费不能为空'},
-            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
-            { type: 'number', message: '必须为数字值'} ]"
+            { type: 'number', message: '必须为数字值,长度不能超过{21}位,小数点后精确到{2}位'} ]"
         >
-          <el-input v-model="temp.evaluationFee" type="textarea" placeholder="Please input" />
+          <el-input-number v-model="temp.evaluationFee" type="number" placeholder="Please input" />
         </el-form-item>
         <el-form-item
           label="保险公估费"
+          prop="insuranceEvaluationFee"
           :rules="[
             { required: true, message: '保险公估费不能为空'},
-            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
-            { type: 'number', message: '必须为数字值'} ]"
+            { type: 'number', message: '必须为数字值,长度不能超过{21}位,小数点后精确到{2}位'} ]"
         >
-          <el-input v-model="temp.insuranceEvaluationFee" type="textarea" placeholder="Please input" />
+          <el-input-number v-model="temp.insuranceEvaluationFee" type="number" placeholder="Please input" />
         </el-form-item>
         <el-form-item
           label="投标咨询费"
+          prop="biddingConsultingFee"
           :rules="[
             { required: true, message: '投标咨询费不能为空'},
-            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
-            { type: 'number', message: '必须为数字值'} ]"
+            { type: 'number', message: '必须为数字值,长度不能超过{21}位,小数点后精确到{2}位'} ]"
         >
-          <el-input v-model="temp.biddingConsultingFee" type="textarea" placeholder="Please input" />
+          <el-input-number v-model="temp.biddingConsultingFee" type="number" placeholder="Please input" />
         </el-form-item>
         <el-form-item
           label="内控咨询费"
+          prop="interolConsultingFee"
           :rules="[
             { required: true, message: '内控咨询费不能为空'},
-            { min: 0, max: 21, message: '长度不能超过{21}位,小数点后精确到{2}位'},
-            { type: 'number', message: '必须为数字值'} ]"
+            { type: 'number', message: '必须为数字值,长度不能超过{21}位,小数点后精确到{2}位'} ]"
         >
-          <el-input v-model="temp.interolConsultingFee" type="textarea" placeholder="Please input" />
+          <el-input-number v-model="temp.interolConsultingFee" type="number" placeholder="Please input" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -302,6 +328,18 @@
 
   .el-table .success-row {
     background: #f0f9eb;
+  }
+  .el-table__header tr,
+  .el-table__header th {
+      padding: 0;
+      height: 20px;
+      width: auto;
+  }
+  .el-table__body tr,
+  .el-table__body td {
+      padding: 0;
+      height: 20px;
+      width: auto;
   }
 </style>
 <script>
@@ -342,6 +380,7 @@ export default {
   },
   data() {
     return {
+      isShow: false,
       tableKey: 0,
       list: null,
       total: 0,
@@ -504,8 +543,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
         import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-          const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+          const tHeader = ['nature', 'insuranceFee', 'riskConsultingFee', 'evaluationFee', 'insuranceEvaluationFee', 'biddingConsultingFee', 'interolConsultingFee']
+          const filterVal = ['nature', 'insuranceFee', 'riskConsultingFee', 'evaluationFee', 'insuranceEvaluationFee', 'biddingConsultingFee', 'interolConsultingFee']
           const data = this.formatJson(filterVal, this.list)
           excel.export_json_to_excel({
             header: tHeader,
@@ -523,6 +562,14 @@ export default {
           return v[j]
         }
       }))
+    },
+    showToggle: function() {
+      console.log(this.isShow)
+      if (this.isShow) {
+        this.isShow = false
+      } else {
+        this.isShow = true
+      }
     }
   }
 }
